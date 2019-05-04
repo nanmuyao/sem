@@ -71,7 +71,7 @@ def filter_label_name():
 
 def init_data(sheet):
     sen_list = [] 
-    for i in range(4, 10):
+    for i in range(4, sheet.max_row):
         if sheet.cell(i, 1).value is not None:
             sen = sheet.cell(i, 1).value.strip() 
             if sen not in sen_list:
