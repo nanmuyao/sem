@@ -1,7 +1,9 @@
 # encoding=utf-8
 
 import jieba
-import jieba.posseg as pseg
+
+jieba.set_dictionary("dict.txt")
+jieba.initialize()
 
 ci_map = {}
 valid_count = 1
