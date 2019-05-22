@@ -6,7 +6,9 @@ from openpyxl import Workbook
 from stat_services import handle_sen, \
         anylizer, \
         get_anylized_word_map, \
-        get_sen_list_by_word
+        get_sen_list_by_word, \
+        get_sen_price_by_sen, \
+        handle_sen_price_dict
 
 
 WB = Workbook()
@@ -72,11 +74,14 @@ def filter_label_name():
 def init_data(sheet):
     sen_list = [] 
     for i in range(4, sheet.max_row):
+    #for i in range(4, 20):
         if sheet.cell(i, 1).value is not None:
             sen = sheet.cell(i, 1).value.strip() 
             if sen not in sen_list:
                 sen_list.append(sen) 
                 handle_sen(sen)
+                price = sheet.cell(i, 6).value.strip() 
+                handle_sen_price_dict(sen, price)
 
 
 def add_col(analyze_sheet):
@@ -89,7 +94,15 @@ def add_col(analyze_sheet):
         #print('word=%s, row_data_list=%s' % (word, row_data_list))
         if row_data_list:
             bulk_insert_col(analyze_sheet, row, col, row_data_list)
-        col = col + 1
+            col = col + 1
+
+        row_sen_price_list = []
+        for sen in row_data_list:
+            row_sen_price_list.append(get_sen_price_by_sen(sen))
+        if row_sen_price_list:
+            bulk_insert_col(analyze_sheet, row, col, row_sen_price_list)
+            col = col + 1
+
 
 
 def get_exclude_list():
@@ -111,7 +124,12 @@ def handle_export(sheet):
     analyze_sheet = wb.create_sheet("analyze_word", index=2)
 
     label_list = filter_label_list()
-    analyze_sheet.append(label_list)
+    
+    new_label_list = []
+    for label in label_list:
+        new_label_list.append(label)
+        new_label_list.append('price')
+    analyze_sheet.append(new_label_list)
     add_col(analyze_sheet)
 
     analyze_sheet.title = "analyze_word"

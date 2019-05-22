@@ -6,9 +6,11 @@ jieba.set_dictionary("dict.txt")
 jieba.initialize()
 
 ci_map = {}
+sen_price = {}
 valid_count = 1
 not_valid_char = ['\n']
 total_word_count = 0
+sen_price = {}
 
 def update_word_info(sen_cutted, sen):
     global ci_map
@@ -31,8 +33,6 @@ def handle_sen(sen):
     update_word_info(jieba.cut(sen, HMM=False), sen)
             
 
-
-
 def anylizer():
     global ci_map
     global total_word_count
@@ -47,6 +47,15 @@ def anylizer():
 
 def get_sen_list_by_word(word):
     return ci_map.get(word, {}).get('sen_list', [])
+
+
+def get_sen_price_by_sen(sen):
+    return sen_price.get(sen, '-1')
+    
+
+def handle_sen_price_dict(sen, price):
+    if sen not in sen_price.keys():
+        sen_price.update({sen:price})
 
 
 def get_anylized_word_map():
