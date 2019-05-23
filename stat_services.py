@@ -12,6 +12,14 @@ not_valid_char = ['\n']
 total_word_count = 0
 sen_price = {}
 
+
+def clear_data():
+    global ci_map
+    global sen_price
+    ci_map = {}
+    sen_cutted = {}
+
+
 def update_word_info(sen_cutted, sen):
     global ci_map
     for ci in sen_cutted:
