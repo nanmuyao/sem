@@ -1,5 +1,6 @@
 # encoding=utf-8
 
+import glob
 from openpyxl import load_workbook
 from openpyxl import Workbook
 
@@ -14,8 +15,8 @@ from stat_services import handle_sen, \
 WB = Workbook()
 
 
-def handle():
-    wb = load_workbook('content_1.XLSX')
+def handle(src_file_name, dest_file_name):
+    wb = load_workbook(src_file_name)
     source_sheet = None
     for sheet in wb:
         #print (sheet.title)
@@ -34,7 +35,7 @@ def handle():
                 pass
 
     handle_filter_sheet(sheet)
-    handle_export(sheet) 
+    handle_export(sheet, dest_file_name) 
 
 
 def bulk_insert_col(sheet, row, col, value_list):
@@ -119,7 +120,7 @@ def get_exclude_list():
     return exclude_list
 
 
-def handle_export(sheet):
+def handle_export(sheet, dest_file_name):
     wb = load_workbook('result.XLSX')
     analyze_sheet = wb.create_sheet("analyze_word", index=2)
 
@@ -133,7 +134,7 @@ def handle_export(sheet):
     add_col(analyze_sheet)
 
     analyze_sheet.title = "analyze_word"
-    wb.save('result.XLSX')
+    wb.save(dest_file_name)
 
 
 def handle_filter_sheet(sheet):
@@ -152,6 +153,12 @@ def handle_filter_sheet(sheet):
     wb.save('result.XLSX')
 
 
-if __name__=='__main__':
-    handle()
+if __name__ == '__main__':
+    path = "*.xlsx"
+    for fname in glob.glob(path):
+        print(fname)
+        src_file_name = fname
+        dest_file_name = src_file_name.split('.')[0]
+        dest_file_name = '%s%s.xlsx' % (dest_file_name, '_anlyzed')
+        handle(src_file_name, dest_file_name)
 
