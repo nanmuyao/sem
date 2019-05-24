@@ -1,6 +1,6 @@
 # sem
 1 generate app
-pyinstall -F handle.py stat_service.py
+pyinstaller -F handle.py stat_service.py
 
 
 sem
