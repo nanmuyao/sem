@@ -9,7 +9,11 @@ from stat_services import handle_sen, \
         get_anylized_word_map, \
         get_sen_list_by_word, \
         get_sen_price_by_sen, \
+        get_sen_click_count_pc_by_sen, \
+        get_sen_click_count_mobile_by_sen, \
         handle_sen_price_dict, \
+        handle_pc_sen_click_count, \
+        handle_mobile_sen_click_count, \
         clear_data
 
 
@@ -83,10 +87,15 @@ def init_data(sheet):
             if sen not in sen_list:
                 sen_list.append(sen) 
                 handle_sen(sen)
-                print('i====', i)
                 price = sheet.cell(i, 6).value.strip() 
                 print('price====', price)
                 handle_sen_price_dict(sen, price)
+                click_count_pc = sheet.cell(i, 5).value.strip() 
+                print('pc_click_count', click_count_pc)
+                handle_pc_sen_click_count(sen, click_count_pc)
+                click_count_mobile = sheet.cell(i, 4).value.strip() 
+                print('mobile_click_count', click_count_mobile)
+                handle_mobile_sen_click_count(sen, click_count_mobile)
 
 
 def add_col(analyze_sheet):
@@ -108,6 +117,19 @@ def add_col(analyze_sheet):
             bulk_insert_col(analyze_sheet, row, col, row_sen_price_list)
             col = col + 1
 
+        row_sen_pc_click_count_list = []
+        for sen in row_data_list:
+            row_sen_pc_click_count_list.append(get_sen_click_count_pc_by_sen(sen))
+        if row_sen_pc_click_count_list:
+            bulk_insert_col(analyze_sheet, row, col, row_sen_pc_click_count_list)
+            col = col + 1
+
+        row_sen_mobile_click_count_list = []
+        for sen in row_data_list:
+            row_sen_mobile_click_count_list.append(get_sen_click_count_mobile_by_sen(sen))
+        if row_sen_mobile_click_count_list:
+            bulk_insert_col(analyze_sheet, row, col, row_sen_mobile_click_count_list)
+            col = col + 1
 
 
 def get_exclude_list():
@@ -135,6 +157,8 @@ def handle_export(sheet, dest_file_name):
     for label in label_list:
         new_label_list.append(label)
         new_label_list.append('price')
+        new_label_list.append('pc_click_count')
+        new_label_list.append('mobile_click_count')
     analyze_sheet.append(new_label_list)
     add_col(analyze_sheet)
 

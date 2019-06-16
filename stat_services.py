@@ -7,17 +7,22 @@ jieba.initialize()
 
 ci_map = {}
 sen_price = {}
+sen_click_count_pc = {}
+sen_click_count_mobile = {}
 valid_count = 1
 not_valid_char = ['\n']
 total_word_count = 0
-sen_price = {}
 
 
 def clear_data():
     global ci_map
     global sen_price
+    global sen_click_count_pc
+    global sen_click_count_mobile
     ci_map = {}
     sen_cutted = {}
+    sen_click_count_pc = {}
+    sen_click_count_mobile = {}
 
 
 def update_word_info(sen_cutted, sen):
@@ -65,6 +70,22 @@ def handle_sen_price_dict(sen, price):
     if sen not in sen_price.keys():
         sen_price.update({sen:price})
 
+def get_sen_click_count_pc_by_sen(sen):
+    return sen_click_count_pc.get(sen, '-1')
+
+
+def handle_pc_sen_click_count(sen, click_count):
+    if sen not in sen_click_count_pc.keys():
+        sen_click_count_pc.update({sen: click_count})
+
+
+def get_sen_click_count_mobile_by_sen(sen):
+    return sen_click_count_mobile.get(sen, '-1')
+
+
+def handle_mobile_sen_click_count(sen, click_count):
+    if sen not in sen_click_count_mobile.keys():
+        sen_click_count_mobile.update({sen: click_count})
 
 def get_anylized_word_map():
     '''
