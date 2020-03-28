@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['handle.py', 'stat_services.py'],
-             pathex=['/Users/tars/Documents/workspaceTest/jieba_test'],
+             pathex=['/Users/tars/Documents/sem'],
              binaries=[],
              datas=[],
              hiddenimports=[],

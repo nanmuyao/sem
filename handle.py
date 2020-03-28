@@ -1,6 +1,8 @@
 # encoding=utf-8
-
+from datetime import datetime
+import time
 import glob
+import os
 from openpyxl import load_workbook
 from openpyxl import Workbook
 
@@ -58,7 +60,7 @@ def filter_label_list(is_filter=True):
     for word_dict in anylized_workd_map:
         word, info = word_dict
         column_field_name = '-'.join([word, str(info.get('count'))])
-        print(word, exclude)
+        #print(word, exclude)
         if is_filter:
             if word not in exclude: 
                 label_list.append(column_field_name)
@@ -88,13 +90,13 @@ def init_data(sheet):
                 sen_list.append(sen) 
                 handle_sen(sen)
                 price = sheet.cell(i, 6).value.strip() 
-                print('price====', price)
+                #print('price====', price)
                 handle_sen_price_dict(sen, price)
                 click_count_pc = sheet.cell(i, 5).value.strip() 
-                print('pc_click_count', click_count_pc)
+                #print('pc_click_count', click_count_pc)
                 handle_pc_sen_click_count(sen, click_count_pc)
                 click_count_mobile = sheet.cell(i, 4).value.strip() 
-                print('mobile_click_count', click_count_mobile)
+                #print('mobile_click_count', click_count_mobile)
                 handle_mobile_sen_click_count(sen, click_count_mobile)
 
 
@@ -194,7 +196,8 @@ def main():
             exclude_src_file_name = dest_file_name
             print('start', src_file_name, dest_file_name)
             handle(src_file_name, dest_file_name)
-            print ('success')
+            print('success time: ', datetime.now().strftime('%m/%d/%y %H:%M:%S'), ' path: ', os.path.abspath(dest_file_name))
+            time.sleep(5)
         else:
             print ('include self')
 
