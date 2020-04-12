@@ -82,25 +82,32 @@ def get_jieba_cut_keywords_count_dict(row_dict):
 def write_to_csv(titles, row_dict, keywords_dict):
     with open('export.csvabc', 'w', newline='') as csvfile:
         _titles = titles.copy()
-        target_key = _titles[0]
         del _titles[0]
 
-        for key, value in keywords_dict.items():
-            fieldnames = []
-            _target_key = '%s-%s' % (key, value)
-            fieldnames.append(_target_key)
+        group_dict = {}
+        group_index = 0
+        export_datas = []
+        fieldnames = []
+        for keyword, value in keywords_dict.items():
+            fieldnames.append('%s-%s' % (keyword, value))
             for title in _titles:
-                fieldnames.append(title)
+                _title = '%s-%s' % (title, group_index)
+                fieldnames.append(_title)
 
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
+            for k, v in row_dict.items():
+                if keyword in k:
+                    d = {}
+                    for field_name in fieldnames:
+                        v_key = field_name.split('-')[0]
+                        d[field_name] = v.get(v_key)
 
-            group_dict = {}
-            for keyword in keywords_dict:
-                for k, v in row_dict.items():
-                    if keyword in k:
-                        group_dict[keyword] = d
-            writer.writerow(group_dict)
+                    export_datas.append(d)
+
+            group_index += 1
+
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerow(export_datas)
 
 
 def export():
