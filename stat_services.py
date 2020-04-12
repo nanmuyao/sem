@@ -42,9 +42,10 @@ def update_word_info(sen_cutted, sen):
             sen_list.append(sen)
         d['sen_list'] = sen_list
 
+
 def handle_sen(sen):
     update_word_info(jieba.cut(sen, HMM=False), sen)
-            
+
 
 def anylizer():
     global ci_map
@@ -53,7 +54,7 @@ def anylizer():
     for k, v in ci_map_sorted:
         if v.get('count') >= valid_count:
             total_word_count = total_word_count + 1
-            #print('%s %s' % (k, v))
+            # print('%s %s' % (k, v))
 
     print('total_word_count=', total_word_count)
 
@@ -64,11 +65,12 @@ def get_sen_list_by_word(word):
 
 def get_sen_price_by_sen(sen):
     return sen_price.get(sen, '-1')
-    
+
 
 def handle_sen_price_dict(sen, price):
     if sen not in sen_price.keys():
-        sen_price.update({sen:price})
+        sen_price.update({sen: price})
+
 
 def get_sen_click_count_pc_by_sen(sen):
     return sen_click_count_pc.get(sen, '-1')
@@ -86,6 +88,7 @@ def get_sen_click_count_mobile_by_sen(sen):
 def handle_mobile_sen_click_count(sen, click_count):
     if sen not in sen_click_count_mobile.keys():
         sen_click_count_mobile.update({sen: click_count})
+
 
 def get_anylized_word_map():
     '''
